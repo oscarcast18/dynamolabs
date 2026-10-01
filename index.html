@@ -5,6 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dynamo Labs — Autodesk Revit add-ins</title>
 <meta name="description" content="Dynamo Labs builds productivity add-ins for Autodesk Revit that automate repetitive BIM documentation tasks.">
+<link rel="canonical" href="https://oscarcast18.github.io/dynamolabs/">
+<meta name="theme-color" content="#2E86C1">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dynamo Labs">
+<meta property="og:title" content="Dynamo Labs — Autodesk Revit add-ins">
+<meta property="og:description" content="Productivity add-ins for Autodesk Revit: Grid Auto Number and DwgMerge. Revit 2018–2027, multilingual, on the Autodesk App Store.">
+<meta property="og:url" content="https://oscarcast18.github.io/dynamolabs/">
+<meta property="og:image" content="https://oscarcast18.github.io/dynamolabs/img/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dynamo Labs — Autodesk Revit add-ins">
+<meta name="twitter:description" content="Productivity add-ins for Autodesk Revit: Grid Auto Number and DwgMerge.">
+<meta name="twitter:image" content="https://oscarcast18.github.io/dynamolabs/img/og-card.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Dynamo Labs","url":"https://oscarcast18.github.io/dynamolabs/",
+ "logo":"https://oscarcast18.github.io/dynamolabs/img/og-card.png","email":"dynamolabsinc@gmail.com",
+ "founder":{"@type":"Person","name":"Oscar Castillo"},
+ "sameAs":["https://marketplace.autodesk.com/publisher-profile?id=A4PA87XPAWTSARC4"]}
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232E86C1'/%3E%3Cstop offset='1' stop-color='%2317A585'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='bold' font-size='28' text-anchor='middle' fill='white'%3EDL%3C/text%3E%3C/svg%3E">
 <script>
   // Idioma: preferencia guardada, si no el del navegador (es* -> español).
@@ -43,7 +63,14 @@
   .lang{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .lang button{border:0;background:#fff;padding:5px 10px;font-weight:600;cursor:pointer;color:var(--muted)}
   [data-lang="en"] .lang .b-en,[data-lang="es"] .lang .b-es{background:var(--blue);color:#fff}
-  @media(max-width:640px){.nav ul{display:none}}
+  .navr{display:flex;align-items:center;gap:8px}
+  .menu-btn{display:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:3px 10px;font-size:20px;line-height:1.2;cursor:pointer}
+  @media(max-width:640px){
+    .menu-btn{display:block}
+    .nav ul{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;gap:0;background:var(--card);border-bottom:1px solid var(--line);padding:4px 20px 10px}
+    .nav.open ul{display:flex}
+    .nav ul li a{display:block;padding:10px 0;font-size:17px}
+  }
 
   /* Hero */
   .hero{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;padding:70px 0 64px}
@@ -94,6 +121,24 @@
   footer a:hover{color:var(--blue)}
   footer ul{list-style:none;margin:0;padding:0}
   footer li{margin:3px 0}
+  .gallery.one{grid-template-columns:1fr}
+  a.btn,.card,.gallery a{transition:transform .15s ease, box-shadow .15s ease}
+  .gallery a:hover,.app:hover{box-shadow:0 6px 22px rgba(0,0,0,.08)}
+  .btn:hover{transform:translateY(-1px)}
+
+  /* Modo oscuro según el sistema */
+  @media (prefers-color-scheme: dark){
+    :root{ --ink:#e6edf3; --muted:#9aa7b4; --bg:#0f1720; --card:#16212c; --line:#26323e; }
+    a{color:#5DADE2}
+    .nav{background:rgba(15,23,32,.92)}
+    .nav ul a{color:var(--ink)}
+    .lang button,.btn-line{background:var(--card)}
+    .btn-line{color:#5DADE2}
+    .gallery a{background:var(--card)}
+    footer{background:var(--card)}
+    p,.app ul{color:#c9d4de}
+    .badge{background:#123b33}
+  }
 </style>
 </head>
 <body>
@@ -101,14 +146,17 @@
 <nav class="nav">
   <div class="wrap">
     <a class="brand" href="#top"><span class="mark">DL</span> Dynamo Labs</a>
-    <ul>
+    <ul onclick="this.closest('.nav').classList.remove('open')">
       <li><a href="#apps"><span class="en">Apps</span><span class="es">Apps</span></a></li>
       <li><a href="#about"><span class="en">About</span><span class="es">Nosotros</span></a></li>
       <li><a href="support.html"><span class="en">Support</span><span class="es">Soporte</span></a></li>
     </ul>
-    <div class="lang" role="group" aria-label="Language">
-      <button class="b-en" onclick="setLang('en')">EN</button>
-      <button class="b-es" onclick="setLang('es')">ES</button>
+    <div class="navr">
+      <button class="menu-btn" aria-label="Menu" onclick="this.closest('.nav').classList.toggle('open')">&#9776;</button>
+      <div class="lang" role="group" aria-label="Language">
+        <button class="b-en" onclick="setLang('en')">EN</button>
+        <button class="b-es" onclick="setLang('es')">ES</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -201,6 +249,9 @@
         <li><span class="en">Merges them into a single file with one layout per sheet, keeping title blocks and viewports.</span><span class="es">Las une en un solo archivo con un layout por lámina, conservando cajetines y viewports.</span></li>
         <li><span class="en">Manual or automatic sheet order and file-name templates.</span><span class="es">Orden de láminas manual o automático y plantillas de nombre.</span></li>
       </ul>
+      <div class="gallery one">
+        <a href="img/dwgmerge-merge.png" target="_blank" rel="noopener"><img src="img/dwgmerge-merge.png" alt="DwgMerge: separate sheet files merged into one DWG with one layout per sheet" loading="lazy"></a>
+      </div>
       <div class="actions">
         <a class="btn btn-blue" href="https://apps.autodesk.com/RVT/en/Detail/Index?id=3982142088333014794"><span class="en">Get it on the App Store</span><span class="es">Obtener en la App Store</span></a>
         <a class="btn btn-line" href="https://oscarcast18.github.io/dwgmerger/"><span class="en">Overview</span><span class="es">Más información</span></a>
